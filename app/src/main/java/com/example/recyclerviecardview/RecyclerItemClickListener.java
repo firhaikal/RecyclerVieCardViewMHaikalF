@@ -10,7 +10,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListener {
-    private AdapterView.OnItemClickListener mListener;
+    private OnItemClickListener mListener;
     GestureDetector mGestureDetector;
 
     public interface OnItemClickListener{
@@ -18,7 +18,7 @@ public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListen
     }
 
     public RecyclerItemClickListener(Context context, OnItemClickListener listener) {
-        mListener = listener;
+        mListener = (OnItemClickListener) listener;
         mGestureDetector = new GestureDetector(context, new
                 GestureDetector.SimpleOnGestureListener() {
                     @Override public boolean onSingleTapUp(MotionEvent e) {
@@ -28,8 +28,8 @@ public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListen
     }
 
     @Override
-    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) { View childView = rv.findChildViewUnder(e.getX(),e.getY()); if(childView != null && mListener != null &&
-            mGestureDetector.onTouchEvent(e)){
+    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) { View childView = rv.findChildViewUnder(e.getX(),e.getY());
+        if(childView != null && mListener != null && mGestureDetector.onTouchEvent(e)){
         mListener.onItemClick(childView, rv.getChildAdapterPosition(childView));
         return true;
     }
